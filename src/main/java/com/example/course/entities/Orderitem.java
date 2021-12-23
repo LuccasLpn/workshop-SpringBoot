@@ -8,40 +8,46 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import com.example.course.entities.pk.OrderitemPk;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_order_item")
-public class Orderitem implements  Serializable{
-	
+public class Orderitem implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@EmbeddedId
-	private OrderitemPk id;
+	private OrderitemPk id = new OrderitemPk();
+
 	private Integer quantity;
 	private Double price;
-	
+
 	public Orderitem() {
 		super();
 	}
 
-	public Orderitem(Order order, Product product,Integer quantity, Double price) {
+	public Orderitem(Order order, Product product, Integer quantity, Double price) {
 		super();
 		id.setOrder(order);
 		id.setProduct(product);
 		this.quantity = quantity;
 		this.price = price;
 	}
-	
+
+	@JsonIgnore
 	public Order getOrder() {
 		return id.getOrder();
 	}
+
 	public void setOrder(Order order) {
 		id.setOrder(order);
 	}
+
 	public Product getProduct() {
 		return id.getProduct();
 	}
-	public void setProduct(Product  product) {
+
+	public void setProduct(Product product) {
 		id.setProduct(product);
 	}
 
@@ -60,8 +66,6 @@ public class Orderitem implements  Serializable{
 	public void setPrice(Double price) {
 		this.price = price;
 	}
-	
-	
 
 	@Override
 	public int hashCode() {
@@ -79,10 +83,5 @@ public class Orderitem implements  Serializable{
 		Orderitem other = (Orderitem) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
-	
-	
-	
-	
+
 }
