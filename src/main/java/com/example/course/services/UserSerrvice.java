@@ -1,5 +1,6 @@
 package com.example.course.services;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.course.entities.User;
 import com.example.course.repositories.UserRepository;
+import com.example.course.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserSerrvice {
@@ -21,7 +23,7 @@ public class UserSerrvice {
 	
 	public User findById(Long id) {
 		Optional <User> obj = userRepository.findById(id);
-		return obj.get();
+		return obj.orElseThrow( () -> new ResourceNotFoundException(id));
 	}
 	
 	public User insert(User obj) {
@@ -32,7 +34,8 @@ public class UserSerrvice {
 		userRepository.getById(id);
 	}
 	
-	public User update(Long id, User obj) {
+	public User update(Long id,  User obj) {
+		@SuppressWarnings("deprecation")
 		User entity = userRepository.getOne(id);
 		updatedata(entity, obj);
 		return userRepository.save(entity);
